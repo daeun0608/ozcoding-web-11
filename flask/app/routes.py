@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template, g
+from flasgger.utils import swag_from
+
 from .database import SessionLocal
 from .models import Movie
 
@@ -41,12 +43,11 @@ def manage_movies():
 
     if request.method == "POST":
         data = request.get_json()
-        print(data)
         movie = Movie(
             title=data.get("title"),
             genre=data.get("keywords"),
             description=data.get("description"),
-            thumbnail=data.get("thumbnail_url")
+            thumbnail=data.get("thumbnail_url"),
         )
         db.add(movie)
         db.commit()
@@ -80,6 +81,35 @@ def manage_movies():
 
 
 @bp.route("/recommend", methods=["POST"])
+@swag_from(
+    {
+        "tags": ["Recommend"],
+        "description": "장르 키워드를 기반으로 영화를 추천합니다.",
+        "parameters": [
+            {
+                "name": "keyword",
+                "in": "body",
+                "schema": {
+                    "type": "object",
+                    "properties": {"keyword": {"type": "string", "example": "SF"}},
+                    "required": ["keyword"],
+                },
+            }
+        ],
+        "responses": {
+            200: {
+                "description": "추천된 영화",
+                "examples": {
+                    "application/json": {
+                        "title": "Interstellar",
+                        "description": "A space exploration epic.",
+                    }
+                },
+            },
+            404: {"description": "추천 결과 없음"},
+        },
+    }
+)
 def recommend():
     keyword = request.json.get("keyword")
     db = g.db
@@ -87,7 +117,11 @@ def recommend():
     if movies:
         return jsonify(
             [
-                {"title": movie.title, "description": movie.description, "thumbnail_url":movie.thumbnail}
+                {
+                    "title": movie.title,
+                    "description": movie.description,
+                    "thumbnail_url": movie.thumbnail,
+                }
                 for movie in movies
             ]
         )
