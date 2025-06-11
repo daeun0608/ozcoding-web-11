@@ -59,11 +59,6 @@
     });
   }
 
-  async function deleteContent(id) {
-    await fetch(`/admin/content?id=${id}`, { method: "DELETE" });
-    loadContents();
-  }
-
   loadContents();
 </script>
 
