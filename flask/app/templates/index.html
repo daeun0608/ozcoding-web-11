@@ -28,7 +28,6 @@
     
     document.getElementById("loading").style.display = "block";
     try {
-      // const res = await fetch(`/recommend?keyword=${encodeURIComponent(keyword)}`);
       const res = await fetch("/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
