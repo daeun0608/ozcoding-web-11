@@ -24,7 +24,7 @@ def test_add_movie(test_client):
     assert json_data["message"] == "Movie added successfully"
 
 
-def test_recommend_found(test_client, db_session):
+def test_recommend_found(test_client, mock_session):
     # DB에 영화 직접 추가
     movie = Movie(
         title="Comedy Hit",
@@ -32,8 +32,9 @@ def test_recommend_found(test_client, db_session):
         description="Funny movie",
         thumbnail="thumbnail",
     )
-    db_session.add(movie)
-    db_session.commit()
+    mock_session.add(movie)
+    mock_session.commit()
+    print(mock_session.query(Movie).all()[0].genre)
 
     response = test_client.post(
         "/recommend",

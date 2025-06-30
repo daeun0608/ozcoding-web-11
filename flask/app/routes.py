@@ -7,14 +7,13 @@ from .models import Movie
 bp = Blueprint("main", __name__)
 
 
-@bp.before_app_request
+@bp.before_request
 def get_db():
     if "db" not in g:
         g.db = SessionLocal()
 
 
-# 예외에도 실행, 마지막에 실행 반면 after_request response 객체 생성후 실행, 로깅 못함
-@bp.teardown_app_request
+@bp.teardown_request
 def teardown_db(exception):
     db = g.pop("db", None)
     if db is not None:
