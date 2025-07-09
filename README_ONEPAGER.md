@@ -1,3 +1,4 @@
+git switch -c develop origin/develop
 # 🎯 콘텐츠 추천 웹 프로젝트 - 핵심 기획 요약
 
 ## 1. 문제 (Problem)

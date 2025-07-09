@@ -1,3 +1,5 @@
+# 다른 테스들이 공유해서 사용할 fixture 코드 파일
+
 import pytest
 from app import create_app
 from app.database import Base, SessionLocal
@@ -49,7 +51,7 @@ def test_client():
     Base.metadata.drop_all(bind=TEST_ENGINE)
     ctx.pop()
 
-
+# 기본은 function
 @pytest.fixture(scope="function")
 def mock_session():
     session = TestingSessionLocal()
