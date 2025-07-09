@@ -43,3 +43,12 @@ project-root/
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
+
+### 2. 프론트 실행
+
+```bash
+cd frontend
+python3 -m http.server 8080
+접속: http://localhost:8080/index.html
+```
