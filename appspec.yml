@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+files:
+  - source: .
+    destination: /home/ec2-user/flask
+
+hooks:
+  AfterInstall:
+    - location: flask/scripts/install.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: flask/scripts/start.sh
+      timeout: 300
+      runas: root
